@@ -462,7 +462,7 @@ if_join_vrrp_group(sa_family_t family, int *sd, interface *ifp, int proto)
 }
 
 int
-if_leave_vrrp_group(sa_family_t family, int sd, interface *ifp)
+if_leave_vrrp_group(sa_family_t family, int sd, interface *ifp, int unicast)
 {
 	struct ip_mreqn imr;
 	struct ipv6_mreq imr6;
@@ -471,6 +471,9 @@ if_leave_vrrp_group(sa_family_t family, int sd, interface *ifp)
 	/* If fd is -1 then we add a membership trouble */
 	if (sd < 0 || !ifp)
 		return -1;
+	
+	if (unicast)
+		goto skip_mcast_release;
 
 	/* Leaving the VRRP multicast group */
 	if (family == AF_INET) {
@@ -500,6 +503,7 @@ if_leave_vrrp_group(sa_family_t family, int sd, interface *ifp)
 		return -1;
 	}
 
+skip_mcast_release:
 	/* Finally close the desc */
 	close(sd);
 	return 0;

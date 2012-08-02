@@ -99,6 +99,8 @@ typedef struct _vrrp_rt {
 	list track_ifp;		/* Interface state we monitor */
 	list track_script;	/* Script state we monitor */
 	uint32_t mcast_saddr;	/* Src IP address to use in VRRP IP header */
+	uint32_t unicast_bind;	/* listen to this IP if mcast is not possible */
+	uint32_t unicast_peer;	/* send to this IP if mcast is not possible */
 	char *lvs_syncd_if;	/* handle LVS sync daemon state using this
 				 * instance FSM & running on specific interface
 				 * => eth0 for example.
@@ -215,8 +217,8 @@ typedef struct _vrrp_rt {
 
 /* prototypes */
 extern vrrp_pkt *vrrp_get_header(sa_family_t, char *, int *, uint32_t *);
-extern int open_vrrp_send_socket(sa_family_t, int, int);
-extern int open_vrrp_socket(sa_family_t, int, int);
+extern int open_vrrp_send_socket(sa_family_t, int, int, int);
+extern int open_vrrp_socket(sa_family_t, int, int, int);
 extern int new_vrrp_socket(vrrp_rt *);
 extern void close_vrrp_socket(vrrp_rt *);
 extern void vrrp_send_link_update(vrrp_rt *);

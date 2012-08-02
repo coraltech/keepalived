@@ -141,7 +141,7 @@ free_sock(void *sock_data)
 	interface *ifp;
 	if (sock->fd_in > 0) {
 		ifp = if_get_by_ifindex(sock->ifindex);
-		if_leave_vrrp_group(sock->family, sock->fd_in, ifp);
+		if_leave_vrrp_group(sock->family, sock->fd_in, ifp, 0);
 	}
 	if (sock->fd_out > 0)
 		close(sock->fd_out);
